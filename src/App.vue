@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-link to="/register">注册</router-link>
+    <router-link to="/register" v-show="this.$route.path === '/'">注册</router-link>
     <router-view></router-view>
   </div>
 </template>
@@ -8,7 +8,10 @@
 <script>
   export default {
     name: 'app', // 首字母自动转为大写
-    components: {}
+    components: {},
+    data: function () {
+      return {}
+    }
   }
 </script>
 
@@ -19,6 +22,6 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    margin-top: 60px;
+    /* margin-top: 60px; */
   }
 </style>
