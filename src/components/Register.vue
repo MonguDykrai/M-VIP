@@ -2,18 +2,23 @@
   <div class="register">
 
     <div class="logo-wrapper">
-      <font-awesome-icon icon="times" @click.stop="closeRegView" />
+      <font-awesome-icon icon="times" @click.stop="closeCurrView" />
       <div class="logo"></div>
+      <p class="warning" v-show="appearWarningMsg">
+        <font-awesome-icon icon="times-circle" />
+        <span>{{ warningMsg }}</span>
+      </p>
     </div>
 
     <div class="phone-wrapper">
       <label for="phone">手机号</label>
-      <input type="tel" placeholder="请输入手机号" id="phone" v-model="phoneNumber" maxlength="11">
+      <input type="tel" placeholder="请输入手机号" id="phone" v-model="phoneNumber" maxlength="11" @input.stop="iptPhoneNumber"
+        autocomplete="off">
     </div>
 
     <div class="captcha-wrapper">
       <label for="captcha">验证码</label>
-      <input type="number" placeholder="请输入验证码" id="captcha" v-model="captcha">
+      <input type="number" placeholder="请输入验证码" id="captcha" v-model="captcha" autocomplete="off" @input.stop="iptCaptcha">
       <button @click.stop="getCaptcha">获取验证码</button>
     </div>
 
@@ -43,16 +48,27 @@
       return {
         phoneNumber: '',
         captcha: '',
-        arrivedCaptcha: ''
+        arrivedCaptcha: '',
+        warningMsg: '',
+        appearWarningMsg: false
       }
     },
     methods: {
       getCaptcha: function (e) {
         const { phoneNumber } = this
+        const { isMatched } = this.$tools
         // this.arrivedCaptcha = '123456'
 
+        if (!isMatched(phoneNumber)) {
+          this.appearWarningMsg = true
+          this.warningMsg = '手机号码格式错误'
+          return
+        }
+
+        if (this.arrivedCaptcha) return
+
         fetch(`http://localhost:8081/getCaptcha?phone=${phoneNumber}`)
-        // fetch(`http://47.98.145.59:9090/getCaptcha?phone=${phoneNumber}`)
+          // fetch(`http://47.98.145.59:9090/getCaptcha?phone=${phoneNumber}`)
           .then(function (res) {
             // console.log(res)
             return res.json()
@@ -66,15 +82,29 @@
             }
           })
       },
+
       login: function () {
         const { captcha, arrivedCaptcha } = this
 
-        if (captcha == arrivedCaptcha) {
-          this.$router.push({ path: '/' })
+        if (captcha != arrivedCaptcha) {
+          this.appearWarningMsg = true
+          this.warningMsg = '短信验证码错误，请重试!'
+          return
         }
-      },
-      closeRegView: function () {
+
         this.$router.push({ path: '/' })
+      },
+
+      closeCurrView: function () {
+        this.$router.push({ path: '/' })
+      },
+
+      iptPhoneNumber: function () {
+        this.appearWarningMsg = false
+      },
+
+      iptCaptcha: function () {
+        this.appearWarningMsg = false
       }
     }
   }
@@ -103,6 +133,18 @@
       top: 10px;
       right: 10px;
       font-size: 23px;
+    }
+
+    >.warning {
+      position: absolute;
+      bottom: 6px;
+      left: 15px;
+      font-size: 12px;
+      color: #C93C29;
+
+      >[data-icon="times-circle"] {
+        margin-right: 6px;
+      }
     }
   }
 
