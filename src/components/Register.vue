@@ -13,17 +13,22 @@
     <div class="phone-wrapper">
       <label for="phone">手机号</label>
       <input type="tel" placeholder="请输入手机号" id="phone" v-model="phoneNumber" maxlength="11" @input.stop="iptPhoneNumber"
-        autocomplete="off">
+        autocomplete="off" @focus.stop="focusPhoneNumber" @blur.stop="blurPhoneNumber">
+      <font-awesome-icon icon="times-circle" v-show="appearPhoneNumberClearBtn" @click.stop="clearPhoneNumber" />
     </div>
 
     <div class="captcha-wrapper">
       <label for="captcha">验证码</label>
-      <input type="number" placeholder="请输入验证码" id="captcha" v-model="captcha" autocomplete="off" @input.stop="iptCaptcha">
-      <button @click.stop="getCaptcha">获取验证码</button>
+      <input type="number" placeholder="请输入验证码" id="captcha" v-model="captcha" autocomplete="off" @input.stop="iptCaptcha"
+        @focus.stop="focusCaptcha" @blur.stop="blurCaptcha">
+      <button @click.stop="getCaptcha" :disabled="getCaptchaDisabled" :class="{'resend-captcha': resendCaptcha}">
+        {{!getCaptchaDisabled ? captchaDisableTxt : `${sandClock}秒后重新获取`}}
+      </button>
+      <font-awesome-icon icon="times-circle" v-show="appearCaptchaClearBtn" @click.stop="clearCaptcha" />
     </div>
 
     <div class="login-button-wrapper">
-      <button @click="login">手机号注册登录</button>
+      <button @click="login" :disabled="loginBtnDisabled" :class="{'login-btn-disabled': loginBtnDisabled}">手机号注册登录</button>
     </div>
 
     <div class="term-wrapper">
@@ -46,18 +51,25 @@
     props: {},
     data: function () {
       return {
-        phoneNumber: '',
+        phoneNumber: null,
         captcha: '',
         arrivedCaptcha: '',
+        captchaRequested: false,
+        getCaptchaDisabled: false,
+        captchaDisableTxt: '获取验证码',
+        resendCaptcha: false,
+        sandClock: 0,
         warningMsg: '',
-        appearWarningMsg: false
+        appearWarningMsg: false,
+        appearPhoneNumberClearBtn: false,
+        appearCaptchaClearBtn: false,
+        loginBtnDisabled: true
       }
     },
     methods: {
       getCaptcha: function (e) {
         const { phoneNumber } = this
         const { isMatched } = this.$tools
-        // this.arrivedCaptcha = '123456'
 
         if (!isMatched(phoneNumber)) {
           this.appearWarningMsg = true
@@ -65,9 +77,7 @@
           return
         }
 
-        if (this.arrivedCaptcha) return
-
-        fetch(`http://localhost:8081/getCaptcha?phone=${phoneNumber}`)
+        fetch(`http://localhost:9090/getCaptcha?phone=${phoneNumber}`)
           // fetch(`http://47.98.145.59:9090/getCaptcha?phone=${phoneNumber}`)
           .then(function (res) {
             // console.log(res)
@@ -77,14 +87,43 @@
             const { code } = data
 
             if (code === 1) {
-              const { captcha } = data.data
+              const { captcha, interval } = data.data
               this.arrivedCaptcha = captcha
+              this.captchaRequested = true // At least one request has been requested.
+              this.sandClock = interval - 1 // Countdown starts from 59s
+
+              this.getCaptchaDisabled = true
+              this.resendCaptcha = false
+
+              const timerID = setInterval(() => {
+                if (this.sandClock <= 0) {
+                  this.captchaDisableTxt = '重新获取'
+                  this.resendCaptcha = true // 给 '重新获取' 添加 color: #4a90e2
+                  this.getCaptchaDisabled = false
+                  clearInterval(timerID)
+                  return
+                }
+                --this.sandClock
+              }, 1000)
             }
           })
       },
 
       login: function () {
-        const { captcha, arrivedCaptcha } = this
+        const { captcha, captchaRequested, arrivedCaptcha, phoneNumber } = this
+        const { isMatched } = this.$tools
+
+        if (!isMatched(phoneNumber)) {
+          this.appearWarningMsg = true
+          this.warningMsg = '手机号格式错误'
+          return
+        }
+
+        if (!captchaRequested) {
+          this.appearWarningMsg = true
+          this.warningMsg = '参数错误，请先获取验证码'
+          return
+        }
 
         if (captcha != arrivedCaptcha) {
           this.appearWarningMsg = true
@@ -99,12 +138,82 @@
         this.$router.push({ path: '/' })
       },
 
-      iptPhoneNumber: function () {
-        this.appearWarningMsg = false
+      iptPhoneNumber: function (e) {
+        const { value } = e.target
+
+        this.appearPhoneNumberClearBtn = false
+
+        if (value !== '') {
+          this.appearPhoneNumberClearBtn = true
+          this.appearWarningMsg = false
+
+          if (this.captcha !== '') {
+            this.loginBtnDisabled = false
+          }
+
+          return
+        }
+
+        this.loginBtnDisabled = true
       },
 
-      iptCaptcha: function () {
+      iptCaptcha: function (e) {
+        const { value } = e.target
+
+        this.appearCaptchaClearBtn = false
+
+        if (value !== '') {
+          this.appearCaptchaClearBtn = true
+          this.appearWarningMsg = false
+
+          if (this.phoneNumber !== '') {
+            this.loginBtnDisabled = false
+          }
+
+          return
+        }
+
+        this.loginBtnDisabled = true
+      },
+
+      focusPhoneNumber: function () {
+        const { phoneNumber } = this
+
+        if (phoneNumber) {
+          this.appearPhoneNumberClearBtn = true
+        }
+      },
+
+      focusCaptcha: function () {
+        const { captcha } = this
+
+        if (captcha) {
+          this.appearCaptchaClearBtn = true
+        }
+      },
+
+      blurPhoneNumber: function () {
+        this.appearPhoneNumberClearBtn = false
+      },
+
+      blurCaptcha: function () {
+        this.appearCaptchaClearBtn = false
+      },
+
+      clearPhoneNumber: function () {
+        this.phoneNumber = ''
+        this.appearPhoneNumberClearBtn = false
         this.appearWarningMsg = false
+
+        this.loginBtnDisabled = true
+      },
+
+      clearCaptcha: function () {
+        this.captcha = ''
+        this.appearCaptchaClearBtn = false
+        this.appearWarningMsg = false
+        
+        this.loginBtnDisabled = true
       }
     }
   }
@@ -149,6 +258,7 @@
   }
 
   .phone-wrapper {
+    position: relative;
     height: 52px;
     line-height: 52px;
     padding: 16px 0 16px 15px;
@@ -166,6 +276,15 @@
       float: left;
       font-size: 16px;
       height: 20px;
+    }
+
+    >[data-icon="times-circle"] {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      font-size: 20px;
+      color: #E4E3E6;
     }
   }
 
@@ -201,6 +320,15 @@
       border-left: 1px solid #E7E7E7;
       color: #98989f;
     }
+
+    >[data-icon="times-circle"] {
+      position: absolute;
+      top: 50%;
+      right: 130px;
+      transform: translateY(-50%);
+      font-size: 20px;
+      color: #E4E3E6;
+    }
   }
 
   .login-button-wrapper {
@@ -215,7 +343,7 @@
       background: #de3d96;
       border-radius: 3px;
       font-size: 16px;
-      color: #ee9eca;
+      color: #fff;
     }
   }
 
@@ -249,5 +377,13 @@
       margin: 13px auto;
       font-size: 14px;
     }
+  }
+
+  .resend-captcha {
+    color: #4a90e2 !important;
+  }
+
+  .login-btn-disabled {
+    color: #ee9eca !important;
   }
 </style>
