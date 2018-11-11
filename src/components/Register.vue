@@ -19,10 +19,10 @@
 
     <div class="captcha-wrapper">
       <label for="captcha">验证码</label>
-      <input type="number" placeholder="请输入验证码" id="captcha" v-model="captcha" autocomplete="off" @input.stop="iptCaptcha"
-        @focus.stop="focusCaptcha" @blur.stop="blurCaptcha">
-      <button @click.stop="getCaptcha" :disabled="getCaptchaDisabled" :class="{'resend-captcha': resendCaptcha}">
-        {{!getCaptchaDisabled ? captchaDisableTxt : `${sandClock}秒后重新获取`}}
+      <input type="number" ref="captchaInput" placeholder="请输入验证码" id="captcha" v-model="captcha" autocomplete="off"
+        @input.stop="iptCaptcha" @focus.stop="focusCaptcha" @blur.stop="blurCaptcha">
+      <button @click.stop="getCaptcha" :disabled="getCaptchaDisabled" :class="{'get-captcha-disabled': getCaptchaDisabled}">
+        {{ getCaptchaTxt }}
       </button>
       <font-awesome-icon icon="times-circle" v-show="appearCaptchaClearBtn" @click.stop="clearCaptcha" />
     </div>
@@ -55,9 +55,8 @@
         captcha: '',
         arrivedCaptcha: '',
         captchaRequested: false,
-        getCaptchaDisabled: false,
-        captchaDisableTxt: '获取验证码',
-        resendCaptcha: false,
+        getCaptchaDisabled: true,
+        getCaptchaTxt: '获取验证码',
         sandClock: 0,
         warningMsg: '',
         appearWarningMsg: false,
@@ -69,11 +68,11 @@
     methods: {
       getCaptcha: function (e) {
         const { phoneNumber } = this
-        const { isMatched } = this.$tools
+        const { isValidPhoneNumber } = this.$tools
 
-        if (!isMatched(phoneNumber)) {
-          this.appearWarningMsg = true
-          this.warningMsg = '手机号码格式错误'
+        if (!isValidPhoneNumber(phoneNumber)) {
+          this.appearWarningMsg = true // 显示 错误提示信息
+          this.warningMsg = '手机号码格式错误' // 设置 错误提示信息
           return
         }
 
@@ -89,21 +88,26 @@
             if (code === 1) {
               const { captcha, interval } = data.data
               this.arrivedCaptcha = captcha
-              this.captchaRequested = true // At least one request has been requested.
-              this.sandClock = interval - 1 // Countdown starts from 59s
+              this.captchaRequested = true // 验证码已请求至少一次
+              this.sandClock = interval - 1 // 从 59 开始倒计时
 
-              this.getCaptchaDisabled = true
-              this.resendCaptcha = false
+              this.getCaptchaDisabled = true // 禁用 获取验证码按钮
+
+              this.$refs.captchaInput.focus() // 验证码输入框获得焦点
+
+              this.getCaptchaTxt = `${this.sandClock}秒后重新获取`
 
               const timerID = setInterval(() => {
+
                 if (this.sandClock <= 0) {
-                  this.captchaDisableTxt = '重新获取'
-                  this.resendCaptcha = true // 给 '重新获取' 添加 color: #4a90e2
-                  this.getCaptchaDisabled = false
-                  clearInterval(timerID)
+                  this.getCaptchaTxt = '重新获取'
+                  this.getCaptchaDisabled = false // 启用 获取验证码按钮
+                  clearInterval(timerID) // 清除定时器
                   return
                 }
-                --this.sandClock
+
+                --this.sandClock // 间隔 1 秒钟 -1
+                this.getCaptchaTxt = `${this.sandClock}秒后重新获取`
               }, 1000)
             }
           })
@@ -111,23 +115,23 @@
 
       login: function () {
         const { captcha, captchaRequested, arrivedCaptcha, phoneNumber } = this
-        const { isMatched } = this.$tools
+        const { isValidPhoneNumber } = this.$tools
 
-        if (!isMatched(phoneNumber)) {
-          this.appearWarningMsg = true
-          this.warningMsg = '手机号格式错误'
+        if (!isValidPhoneNumber(phoneNumber)) {
+          this.appearWarningMsg = true // 显示 错误提示信息
+          this.warningMsg = '手机号格式错误' // 设置 错误提示信息
           return
         }
 
         if (!captchaRequested) {
-          this.appearWarningMsg = true
-          this.warningMsg = '参数错误，请先获取验证码'
+          this.appearWarningMsg = true // 显示 错误提示信息
+          this.warningMsg = '参数错误，请先获取验证码' // 设置 错误提示信息
           return
         }
 
         if (captcha != arrivedCaptcha) {
-          this.appearWarningMsg = true
-          this.warningMsg = '短信验证码错误，请重试!'
+          this.appearWarningMsg = true // 显示 错误提示信息
+          this.warningMsg = '短信验证码错误，请重试!' // 设置 错误提示信息
           return
         }
 
@@ -141,46 +145,48 @@
       iptPhoneNumber: function (e) {
         const { value } = e.target
 
-        this.appearPhoneNumberClearBtn = false
+        this.appearPhoneNumberClearBtn = false // 隐藏 清空手机号按钮
 
         if (value !== '') {
-          this.appearPhoneNumberClearBtn = true
-          this.appearWarningMsg = false
+          this.appearPhoneNumberClearBtn = true // 显示 清空手机号按钮
+          this.appearWarningMsg = false // 隐藏 错误提示信息
+          this.getCaptchaDisabled = false // 启用 获取验证码按钮
 
           if (this.captcha !== '') {
-            this.loginBtnDisabled = false
+            this.loginBtnDisabled = false // 启用 手机号注册登录按钮
           }
 
           return
         }
 
-        this.loginBtnDisabled = true
+        this.loginBtnDisabled = true // 禁用 手机号注册登录按钮
+        this.getCaptchaDisabled = true // 禁用 获取验证码按钮
       },
 
       iptCaptcha: function (e) {
         const { value } = e.target
 
-        this.appearCaptchaClearBtn = false
+        this.appearCaptchaClearBtn = false // 隐藏 清空验证码按钮
 
         if (value !== '') {
-          this.appearCaptchaClearBtn = true
-          this.appearWarningMsg = false
+          this.appearCaptchaClearBtn = true // 显示 清空验证码按钮
+          this.appearWarningMsg = false // 隐藏 错误提示信息
 
           if (this.phoneNumber !== '') {
-            this.loginBtnDisabled = false
+            this.loginBtnDisabled = false // 启用 手机号注册登录按钮
           }
 
           return
         }
 
-        this.loginBtnDisabled = true
+        this.loginBtnDisabled = true // 禁用 手机号注册登录按钮
       },
 
       focusPhoneNumber: function () {
         const { phoneNumber } = this
 
         if (phoneNumber) {
-          this.appearPhoneNumberClearBtn = true
+          this.appearPhoneNumberClearBtn = true // 显示 清空手机号按钮
         }
       },
 
@@ -188,32 +194,35 @@
         const { captcha } = this
 
         if (captcha) {
-          this.appearCaptchaClearBtn = true
+          this.appearCaptchaClearBtn = true // 显示 清空验证码按钮
         }
       },
 
       blurPhoneNumber: function () {
-        this.appearPhoneNumberClearBtn = false
+        this.appearPhoneNumberClearBtn = false // 隐藏 清空手机号按钮
       },
 
       blurCaptcha: function () {
-        this.appearCaptchaClearBtn = false
+        this.appearCaptchaClearBtn = false // 隐藏 清空验证码按钮
       },
 
       clearPhoneNumber: function () {
-        this.phoneNumber = ''
-        this.appearPhoneNumberClearBtn = false
-        this.appearWarningMsg = false
+        this.phoneNumber = '' // 重置 手机号输入框
+        this.appearPhoneNumberClearBtn = false // 隐藏 清空手机号按钮
+        this.warningMsg = '' // 重置 错误提示信息
+        this.appearWarningMsg = false // 隐藏 错误提示信息
 
-        this.loginBtnDisabled = true
+        this.loginBtnDisabled = true // 禁用 手机号注册登录按钮
+        this.getCaptchaDisabled = true // 禁用 获取验证码按钮
       },
 
       clearCaptcha: function () {
-        this.captcha = ''
-        this.appearCaptchaClearBtn = false
-        this.appearWarningMsg = false
-        
-        this.loginBtnDisabled = true
+        this.captcha = '' // 重置 验证码输入框
+        this.appearCaptchaClearBtn = false // 隐藏 清空验证码按钮
+        this.warningMsg = '' // 重置 错误提示信息
+        this.appearWarningMsg = false // 隐藏 错误提示信息
+
+        this.loginBtnDisabled = true // 禁用 手机号注册登录按钮
       }
     }
   }
@@ -318,7 +327,7 @@
       width: 120px;
       font-size: 16px;
       border-left: 1px solid #E7E7E7;
-      color: #98989f;
+      color: #4a90e2;
     }
 
     >[data-icon="times-circle"] {
@@ -379,8 +388,8 @@
     }
   }
 
-  .resend-captcha {
-    color: #4a90e2 !important;
+  .get-captcha-disabled {
+    color: #98989f !important;
   }
 
   .login-btn-disabled {
