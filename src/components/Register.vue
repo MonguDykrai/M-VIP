@@ -28,7 +28,7 @@
     </div>
 
     <div class="login-button-wrapper">
-      <button @click="login" :disabled="loginBtnDisabled" :class="{'login-btn-disabled': loginBtnDisabled}">手机号注册登录</button>
+      <button @click.stop="login" :disabled="loginBtnDisabled" :class="{'login-btn-disabled': loginBtnDisabled}">手机号注册登录</button>
     </div>
 
     <div class="term-wrapper">
@@ -66,7 +66,7 @@
       }
     },
     methods: {
-      getCaptcha: function (e) {
+      getCaptcha: function () {
         const { phoneNumber } = this
         const { isValidPhoneNumber } = this.$tools
 
@@ -76,8 +76,16 @@
           return
         }
 
-        fetch(`http://localhost:9090/getCaptcha?phone=${phoneNumber}`)
-          // fetch(`http://47.98.145.59:9090/getCaptcha?phone=${phoneNumber}`)
+        fetch(`http://localhost:9090/getCaptcha`, {
+          // fetch(`http://47.98.145.59:9090/getCaptcha`, {
+          headers: {
+            'Content-type': 'application/json'
+          },
+          method: 'POST',
+          body: JSON.stringify({
+            phoneNumber
+          })
+        })
           .then(function (res) {
             // console.log(res)
             return res.json()
