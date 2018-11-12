@@ -101,7 +101,11 @@
 
                 if (this.sandClock <= 0) {
                   this.getCaptchaTxt = '重新获取'
-                  this.getCaptchaDisabled = false // 启用 获取验证码按钮
+
+                  if (this.phoneNumber !== '') {
+                    this.getCaptchaDisabled = false // 启用 获取验证码按钮
+                  }
+
                   clearInterval(timerID) // 清除定时器
                   return
                 }
