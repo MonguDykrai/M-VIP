@@ -44,7 +44,6 @@
 </template>
 
 <script>
-  import axios from 'axios'
 
   export default {
     name: 'register',
@@ -62,12 +61,14 @@
         appearWarningMsg: false,
         appearPhoneNumberClearBtn: false,
         appearCaptchaClearBtn: false,
-        loginBtnDisabled: true
+        loginBtnDisabled: true,
+        ip: 'localhost:9090', // local
+        // ip: '47.98.145.59:9090' // cloud
       }
     },
     methods: {
       getCaptcha: function () {
-        const { phoneNumber } = this
+        const { phoneNumber, ip } = this
         const { isValidPhoneNumber } = this.$tools
 
         if (!isValidPhoneNumber(phoneNumber)) {
@@ -78,8 +79,7 @@
 
         this.appearWarningMsg = false // 隐藏 错误提示信息，改善用户体验
 
-        fetch(`http://localhost:9090/getCaptcha`, {
-          // fetch(`http://47.98.145.59:9090/getCaptcha`, {
+        fetch(`http://${ip}/get-captcha`, {
           headers: {
             'Content-type': 'application/json'
           },
@@ -128,7 +128,7 @@
       },
 
       login: function () {
-        const { captcha, phoneNumber } = this
+        const { captcha, phoneNumber, ip } = this
         const { isValidPhoneNumber } = this.$tools
 
         if (!isValidPhoneNumber(phoneNumber)) {
@@ -137,7 +137,7 @@
           return
         }
 
-        fetch(`http://localhost:9090/login`, {
+        fetch(`http://${ip}/login`, {
           headers: {
             'Content-type': 'application/json'
           },
