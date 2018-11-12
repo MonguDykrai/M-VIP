@@ -76,6 +76,8 @@
           return
         }
 
+        this.appearWarningMsg = false // 隐藏 错误提示信息，改善用户体验
+
         fetch(`http://localhost:9090/getCaptcha`, {
           // fetch(`http://47.98.145.59:9090/getCaptcha`, {
           headers: {
@@ -126,7 +128,7 @@
       },
 
       login: function () {
-        const { captcha, captchaRequested, arrivedCaptcha, phoneNumber } = this
+        const { captcha, phoneNumber } = this
         const { isValidPhoneNumber } = this.$tools
 
         if (!isValidPhoneNumber(phoneNumber)) {
@@ -135,19 +137,42 @@
           return
         }
 
-        if (!captchaRequested) {
-          this.appearWarningMsg = true // 显示 错误提示信息
-          this.warningMsg = '参数错误，请先获取验证码' // 设置 错误提示信息
-          return
-        }
+        fetch(`http://localhost:9090/login`, {
+          headers: {
+            'Content-type': 'application/json'
+          },
+          method: 'POST',
+          body: JSON.stringify({
+            phoneNumber,
+            captcha
+          })
+        })
+          .then(function (res) {
+            return res.json()
 
-        if (captcha != arrivedCaptcha) {
-          this.appearWarningMsg = true // 显示 错误提示信息
-          this.warningMsg = '短信验证码错误，请重试!' // 设置 错误提示信息
-          return
-        }
+          })
+          .then(data => {
+            const { msg, code } = data
 
-        this.$router.push({ path: '/' })
+            if (code == 0) {
+              this.appearWarningMsg = true // 显示 错误提示信息
+              this.warningMsg = msg // 设置 错误提示信息
+
+              return
+            }
+
+            if (code == 400) {
+              this.appearWarningMsg = true // 显示 错误提示信息
+              this.warningMsg = msg // 设置 错误提示信息
+
+              return
+            }
+
+            this.$router.push({ path: '/' })
+
+          })
+
+
       },
 
       closeCurrView: function () {

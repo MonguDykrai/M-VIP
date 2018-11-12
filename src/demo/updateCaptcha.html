@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const users = [
+      {
+        "userId": 1,
+        "phone": 18521592149,
+        "created": "2018-11-06 14:26:00",
+        "captcha": "123456"
+      },
+      {
+        "userId": 2,
+        "phone": 18521592139,
+        "created": "2018-11-06 14:27:00",
+        "captcha": "123456"
+      }
+    ]
+
+    const phoneNumber = 18521592149
+
+    users.forEach(function (value, index, array) {
+      if (value.phone === phoneNumber) {
+        value.captcha = '245678'
+      }
+    })
+
+    console.log(users)
+  </script>
+</body>
+
+</html>
