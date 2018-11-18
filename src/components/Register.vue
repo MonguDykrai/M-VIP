@@ -19,8 +19,8 @@
 
     <div class="captcha-wrapper">
       <label for="captcha">验证码</label>
-      <input type="number" ref="captchaInput" placeholder="请输入验证码" id="captcha" v-model="captcha" autocomplete="off"
-        @input.stop="iptCaptcha" @focus.stop="focusCaptcha" @blur.stop="blurCaptcha">
+      <input type="tel" ref="captchaInput" placeholder="请输入验证码" id="captcha" maxlength="6" v-model="captcha"
+        autocomplete="off" @input.stop="iptCaptcha" @focus.stop="focusCaptcha" @blur.stop="blurCaptcha">
       <button @click.stop="getCaptcha" :disabled="getCaptchaDisabled" :class="{'get-captcha-disabled': getCaptchaDisabled}">
         {{ getCaptchaTxt }}
       </button>
@@ -37,13 +37,14 @@
 
     <fieldset>
       <legend>或</legend>
-      <button>密码登录</button>
+      <button disabled>密码登录</button>
     </fieldset>
 
   </div>
 </template>
 
 <script>
+  console.log(location.host)
 
   export default {
     name: 'register',
@@ -62,8 +63,9 @@
         appearPhoneNumberClearBtn: false,
         appearCaptchaClearBtn: false,
         loginBtnDisabled: true,
+        // ip: location.host
         ip: 'localhost:9090', // local
-        // ip: '47.98.145.59:9090' // cloud
+        // ip: '47.98.145.59:9090', // cloud
       }
     },
     methods: {
@@ -152,7 +154,7 @@
 
           })
           .then(data => {
-            const { msg, code } = data
+            const { msg, code, token, status } = data
 
             if (code == 0) {
               this.appearWarningMsg = true // 显示 错误提示信息
@@ -166,6 +168,11 @@
               this.warningMsg = msg // 设置 错误提示信息
 
               return
+            }
+
+            if (token) {
+              localStorage.setItem('jwt', token)
+              localStorage.setItem('status', status)
             }
 
             this.$router.push({ path: '/' })

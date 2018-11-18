@@ -27,3 +27,11 @@ yarn run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### MongoDB Collection
+
+https://mongodb.github.io/node-mongodb-native/api-generated/collection.html
+
+## js-cookie
+
+npm i js-cookie
