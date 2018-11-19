@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <router-link to="/register" v-show="this.$route.path === '/'">注册</router-link>
-    <router-link to="/user-fav" v-show="this.$route.path === '/'">我的收藏</router-link>
+    <router-link to="/register" v-show="this.$route.path === '/'" exact>注册</router-link>
+    <router-link to="/user-fav" v-show="this.$route.path === '/'" exact>我的收藏</router-link>
     <router-view></router-view>
     <br>
     <button @click.stop="logout" v-show="this.$route.path === '/'">退出</button>

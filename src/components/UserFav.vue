@@ -12,6 +12,9 @@
 
 <script>
   import axios from 'axios'
+  import tools from '../assets/js/tools.js'
+  const ip = tools.getIp()
+  console.log(ip)
 
   export default {
     name: 'UserFav',
@@ -44,7 +47,7 @@
       getItem: function () {
         const { selectedItem } = this
 
-        axios.get(`http://localhost:9090/get-fav-${selectedItem}`, {
+        axios.get(`http://${ip}/get-fav-${selectedItem}`, {
           headers: {
             'authorization': localStorage.getItem('jwt')
           }

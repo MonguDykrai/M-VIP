@@ -44,7 +44,9 @@
 </template>
 
 <script>
-  console.log(location.host)
+  import tools from '../assets/js/tools.js'
+  const ip = tools.getIp()
+  console.log(ip)
 
   export default {
     name: 'register',
@@ -63,9 +65,7 @@
         appearPhoneNumberClearBtn: false,
         appearCaptchaClearBtn: false,
         loginBtnDisabled: true,
-        // ip: location.host
-        ip: 'localhost:9090', // local
-        // ip: '47.98.145.59:9090', // cloud
+        ip
       }
     },
     methods: {
