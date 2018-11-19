@@ -1,5 +1,5 @@
 <template>
-  <div class="register">
+  <div id="register">
 
     <div class="logo-wrapper">
       <font-awesome-icon icon="times" @click.stop="closeCurrView" />
@@ -46,7 +46,6 @@
 <script>
   import tools from '../assets/js/tools.js'
   const ip = tools.getIp()
-  console.log(ip)
 
   export default {
     name: 'register',
@@ -65,13 +64,12 @@
         appearPhoneNumberClearBtn: false,
         appearCaptchaClearBtn: false,
         loginBtnDisabled: true,
-        ip
       }
     },
     methods: {
       getCaptcha: function () {
-        const { phoneNumber, ip } = this
-        const { isValidPhoneNumber } = this.$tools
+        const { phoneNumber } = this
+        const { isValidPhoneNumber } = this.$_m_tools
 
         if (!isValidPhoneNumber(phoneNumber)) {
           this.appearWarningMsg = true // 显示 错误提示信息
@@ -130,8 +128,8 @@
       },
 
       login: function () {
-        const { captcha, phoneNumber, ip } = this
-        const { isValidPhoneNumber } = this.$tools
+        const { captcha, phoneNumber } = this
+        const { isValidPhoneNumber } = this.$_m_tools
 
         if (!isValidPhoneNumber(phoneNumber)) {
           this.appearWarningMsg = true // 显示 错误提示信息

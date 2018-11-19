@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="favorite">
     <ul>
       <li><a href="javascript: void(0);" data-item-name="product" @click="switchItem">商品</a></li>
       <li><a href="javascript: void(0);" data-item-name="brand" @click="switchItem">品牌</a></li>
@@ -14,7 +14,7 @@
   import axios from 'axios'
   import tools from '../assets/js/tools.js'
   const ip = tools.getIp()
-  console.log(ip)
+  // console.log(ip)
 
   export default {
     name: 'UserFav',

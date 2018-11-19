@@ -18,7 +18,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
 
-Vue.prototype.$tools = tools
+Vue.prototype.$_m_tools = tools // [Private property names] style guide
 
 new Vue({
   el: '#app',
