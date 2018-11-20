@@ -6,6 +6,8 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faTimes, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
+import './assets/css/icon/font_ff0jo8dryy7/iconfont.css'
+
 import tools from './assets/js/tools'
 
 import './assets/css/common-reset.css'

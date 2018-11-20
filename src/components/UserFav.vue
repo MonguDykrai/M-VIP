@@ -1,13 +1,15 @@
 <template>
-  <div id="favorite">
-    <ul>
-      <li><a href="javascript: void(0);" data-item-name="product" @click="switchItem">商品</a></li>
-      <li><a href="javascript: void(0);" data-item-name="brand" @click="switchItem">品牌</a></li>
-      <li><a href="javascript: void(0);" data-item-name="store" @click="switchItem">店铺</a></li>
-    </ul>
+  <transition>
+    <div id="favorite">
+      <ul>
+        <li><a href="javascript: void(0);" data-item-name="product" @click="switchItem">商品</a></li>
+        <li><a href="javascript: void(0);" data-item-name="brand" @click="switchItem">品牌</a></li>
+        <li><a href="javascript: void(0);" data-item-name="store" @click="switchItem">店铺</a></li>
+      </ul>
 
-    <img :src="list[0].imgUrl" style="width: 100%;" alt="">
-  </div>
+      <img :src="list[0].imgUrl" style="width: 100%;" alt="">
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -69,5 +71,16 @@
       float: left;
       margin-right: 5px;
     }
+  }
+
+  /* https://cn.vuejs.org/v2/guide/transitions.html#ad */
+  .v-enter-active,
+  .v-leave-active {
+    transition: opacity .5s;
+  }
+
+  .v-enter,
+  .v-leave-to {
+    opacity: 0;
   }
 </style>

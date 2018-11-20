@@ -1,46 +1,48 @@
 <template>
-  <div id="register">
+  <transition>
+    <div id="register">
 
-    <div class="logo-wrapper">
-      <font-awesome-icon icon="times" @click.stop="closeCurrView" />
-      <div class="logo"></div>
-      <p class="warning" v-show="appearWarningMsg">
-        <font-awesome-icon icon="times-circle" />
-        <span>{{ warningMsg }}</span>
-      </p>
+      <div class="logo-wrapper">
+        <font-awesome-icon icon="times" @click.stop="closeCurrView" />
+        <div class="logo"></div>
+        <p class="warning" v-show="appearWarningMsg">
+          <font-awesome-icon icon="times-circle" />
+          <span>{{ warningMsg }}</span>
+        </p>
+      </div>
+
+      <div class="phone-wrapper">
+        <label for="phone">手机号</label>
+        <input type="tel" placeholder="请输入手机号" id="phone" v-model="phoneNumber" maxlength="11" @input.stop="iptPhoneNumber"
+          autocomplete="off" @focus.stop="focusPhoneNumber" @blur.stop="blurPhoneNumber">
+        <font-awesome-icon icon="times-circle" v-show="appearPhoneNumberClearBtn" @click.stop="clearPhoneNumber" />
+      </div>
+
+      <div class="captcha-wrapper">
+        <label for="captcha">验证码</label>
+        <input type="tel" ref="captchaInput" placeholder="请输入验证码" id="captcha" maxlength="6" v-model="captcha"
+          autocomplete="off" @input.stop="iptCaptcha" @focus.stop="focusCaptcha" @blur.stop="blurCaptcha">
+        <button @click.stop="getCaptcha" :disabled="getCaptchaDisabled" :class="{'get-captcha-disabled': getCaptchaDisabled}">
+          {{ getCaptchaTxt }}
+        </button>
+        <font-awesome-icon icon="times-circle" v-show="appearCaptchaClearBtn" @click.stop="clearCaptcha" />
+      </div>
+
+      <div class="login-button-wrapper">
+        <button @click.stop="login" :disabled="loginBtnDisabled" :class="{'login-btn-disabled': loginBtnDisabled}">手机号注册登录</button>
+      </div>
+
+      <div class="term-wrapper">
+        <p>同意《唯品会服务条款》、《隐私条款》、《唯品支付用户服务协议》、《唯品信用服务协议》</p>
+      </div>
+
+      <fieldset>
+        <legend>或</legend>
+        <button disabled>密码登录</button>
+      </fieldset>
+
     </div>
-
-    <div class="phone-wrapper">
-      <label for="phone">手机号</label>
-      <input type="tel" placeholder="请输入手机号" id="phone" v-model="phoneNumber" maxlength="11" @input.stop="iptPhoneNumber"
-        autocomplete="off" @focus.stop="focusPhoneNumber" @blur.stop="blurPhoneNumber">
-      <font-awesome-icon icon="times-circle" v-show="appearPhoneNumberClearBtn" @click.stop="clearPhoneNumber" />
-    </div>
-
-    <div class="captcha-wrapper">
-      <label for="captcha">验证码</label>
-      <input type="tel" ref="captchaInput" placeholder="请输入验证码" id="captcha" maxlength="6" v-model="captcha"
-        autocomplete="off" @input.stop="iptCaptcha" @focus.stop="focusCaptcha" @blur.stop="blurCaptcha">
-      <button @click.stop="getCaptcha" :disabled="getCaptchaDisabled" :class="{'get-captcha-disabled': getCaptchaDisabled}">
-        {{ getCaptchaTxt }}
-      </button>
-      <font-awesome-icon icon="times-circle" v-show="appearCaptchaClearBtn" @click.stop="clearCaptcha" />
-    </div>
-
-    <div class="login-button-wrapper">
-      <button @click.stop="login" :disabled="loginBtnDisabled" :class="{'login-btn-disabled': loginBtnDisabled}">手机号注册登录</button>
-    </div>
-
-    <div class="term-wrapper">
-      <p>同意《唯品会服务条款》、《隐私条款》、《唯品支付用户服务协议》、《唯品信用服务协议》</p>
-    </div>
-
-    <fieldset>
-      <legend>或</legend>
-      <button disabled>密码登录</button>
-    </fieldset>
-
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -436,5 +438,13 @@
 
   .login-btn-disabled {
     color: #ee9eca !important;
+  }
+
+  .v-enter-active {
+    transition: opacity .5s;
+  }
+
+  .v-enter {
+    opacity: 0;
   }
 </style>

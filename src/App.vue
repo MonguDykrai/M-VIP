@@ -1,11 +1,16 @@
 <template>
   <div id="app">
     <app-home></app-home>
-    <router-link to="/register" v-show="this.$route.path === '/'" exact>注册</router-link>
-    <router-link to="/user-fav" v-show="this.$route.path === '/'" exact>我的收藏</router-link>
     <router-view></router-view>
-    <br>
-    <button @click.stop="logout" v-show="this.$route.path === '/'">退出</button>
+    <!-- <router-link to="/user-fav" v-if="this.$route.path === '/'" exact>我的收藏</router-link> -->
+
+    <!-- <div class="fn-btns" v-if="true">
+      <router-link to="/register" v-show="this.$route.path === '/'" exact>注册</router-link>
+      <router-link to="/user-fav" v-show="this.$route.path === '/'" exact>我的收藏</router-link>
+      <router-view></router-view>
+      <br>
+      <button @click.stop="logout" v-show="this.$route.path === '/'">退出</button>
+    </div> -->
   </div>
 </template>
 
@@ -15,7 +20,7 @@
 
   export default {
     name: 'app', // 首字母自动转为大写
-    components: {AppHome},
+    components: { AppHome },
     data: function () {
       return {}
     },

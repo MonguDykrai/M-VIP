@@ -19,8 +19,24 @@ time, mark, audio, video {
 	vertical-align: baseline;
 }
 
+/* iScroll 需要 */
+* {
+	box-sizing: border-box;
+}
+
+/* iScroll 需要 */
+html {
+	-ms-touch-action: none;
+	touch-action: none;
+}
+
 body {
 	font-family: "Microsoft Yahei", "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+}
+
+/* iScroll 需要 */
+body {
+	overflow: hidden;
 }
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
@@ -34,4 +50,8 @@ body {
 
 ::-ms-input-placeholder { /* Microsoft Edge */
 	color: #CCCCCC;
+}
+
+a {
+	text-decoration: none;
 }
