@@ -20,64 +20,26 @@
       </div>
     </div>
 
-    <div id="iscroll-wrapper">
-      <div id="scroller">
-        <ul>
-          <li>Cell 1</li>
-          <li>Cell 2</li>
-          <li>Cell 3</li>
-          <li>Cell 4</li>
-          <li>Cell 5</li>
-          <li>Cell 6</li>
-          <li>Cell 7</li>
-          <li>Cell 8</li>
-          <li>Cell 9</li>
-          <li>Cell 10</li>
-          <li>Cell 11</li>
-          <li>Cell 12</li>
-          <li>Cell 13</li>
-          <li>Cell 14</li>
-          <li>Cell 15</li>
-          <li>Cell 16</li>
-          <li>Cell 17</li>
-          <li>Cell 18</li>
-          <li>Cell 19</li>
-          <li>Cell 20</li>
-          <li>Cell 21</li>
-          <li>Cell 22</li>
-          <li>Cell 23</li>
-          <li>Cell 24</li>
-          <li>Cell 25</li>
-          <li>Cell 26</li>
-          <li>Cell 27</li>
-          <li>Cell 28</li>
-          <li>Cell 29</li>
-          <li>Cell 30</li>
-          <li>Cell 31</li>
-          <li>Cell 32</li>
-          <li>Cell 33</li>
-          <li>Cell 34</li>
-          <li>Cell 35</li>
-          <li>Cell 36</li>
-          <li>Cell 37</li>
-          <li>Cell 38</li>
-          <li>Cell 39</li>
-          <li>Cell 40</li>
-          <li>Cell 41</li>
-          <li>Cell 42</li>
-          <li>Cell 43</li>
-          <li>Cell 44</li>
-          <li>Cell 45</li>
-          <li>Cell 46</li>
-          <li>Cell 47</li>
-          <li>Cell 48</li>
-          <li>Cell 49</li>
-          <li>Cell 50</li>
-        </ul>
-      </div>
+    <div class="tab-bar">
+      <div class="iscroll-wrapper" ref="tbIscrollWrapper">
+        <div class="scroller" ref="tbScroller">
+          <ul ref="tbUL">
+            <li><a href="javascript: void(0);">今日推荐</a></li>
+            <li><a href="javascript: void(0);">最后疯抢</a></li>
+            <li><a href="javascript: void(0);">时尚</a></li>
+            <li><a href="javascript: void(0);">美妆</a></li>
+            <li><a href="javascript: void(0);">母婴</a></li>
+            <li><a href="javascript: void(0);">家电</a></li>
+            <li><a href="javascript: void(0);">家居</a></li>
+            <li><a href="javascript: void(0);">国际</a></li>
+            <li><a href="javascript: void(0);">生活</a></li>
+          </ul>
+        </div>
 
-      <div id="more"></div>
+        <div class="more" ref="tbMore"></div>
+      </div>
     </div>
+
 
     <div class="brand-ad">
       <img src="../assets/images/Home/img-brand-ad.jpg" alt="">
@@ -87,19 +49,46 @@
 
 <script>
   import IScroll from 'iscroll'
-  console.log(IScroll)
+
 
   export default {
     name: 'home',
     data: function () {
       return {
-        showBanner: true
+        showBanner: true,
+        ulTotalLength: 0,
       }
     },
     created: function () {
+
+    },
+    mounted: function () {
+      this.initIScroll()
     },
     methods: {
+      initIScroll: function () {
+        let { ulTotalLength } = this
+        const { tbIscrollWrapper, tbScroller, tbUL, tbMore } = this.$refs
+        const lis = Array.from(tbUL.children)
+
+        lis.forEach(function (val) {
+          const valMarginLeft = Number(window.getComputedStyle(val).marginLeft.slice(0, -2))
+          const valMarginRight = Number(window.getComputedStyle(val).marginRight.slice(0, -2))
+          const valWidth = Number(window.getComputedStyle(val).width.slice(0, -2))
+          // console.log(valMarginLeft, valMarginRight, valWidth)
+          const width = valMarginLeft + valMarginRight + valWidth
+          ulTotalLength += width
+        })
+
+        const moreWidth = Number(window.getComputedStyle(tbMore).width.slice(0, -2))
+        ulTotalLength = ulTotalLength + moreWidth
+        tbScroller.style.width = `${ulTotalLength}px`
+
+        const myIScroll = new IScroll(tbIscrollWrapper, { scrollX: true, scrollY: false, mouseWheel: true });
+      },
       closeDownloadBanner: function () {
+        console.log(this)
+        console.log(this.$refs)
         this.showBanner = false
       }
     }
@@ -216,7 +205,68 @@
     }
   }
 
-  #iscroll-wrapper {}
+  .tab-bar {
+    position: relative;
+    width: 100%;
+    height: .90667rem;
+
+    .iscroll-wrapper {
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      overflow: hidden;
+
+      .more {
+        z-index: 10;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 1.0667rem;
+        height: 100%;
+        background-color: red;
+      }
+
+      .scroller {
+        position: absolute;
+        z-index: 1;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        /* width: 1000px; */
+        height: 100%;
+        /* background-color: #f0f; */
+        transform: translateZ(0);
+        user-select: none;
+        text-size-adjust: none;
+
+        ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          /* width: 100%; */
+          height: 100%;
+          text-align: center;
+
+          li {
+            display: flex;
+            float: left;
+            justify-content: center;
+            align-items: center;
+            /* width: 1.24074rem; */
+            margin: 0 .26666rem;
+            height: 100%;
+            /* border-right: 1px solid #ccc; */
+            background-color: #fafafa;
+            font-size: .34667rem;
+          }
+        }
+
+      }
+    }
+  }
 
   .brand-ad {
     width: 100%;

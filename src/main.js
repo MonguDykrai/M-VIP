@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import { router } from './router'
+import { store } from './store'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faTimes, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
@@ -24,7 +25,8 @@ Vue.prototype.$_m_tools = tools // [Private property names] style guide
 
 new Vue({
   el: '#app',
-  router,
+  router, // routing
+  store,
   components: { App },
   template: '<App/>'
 })
