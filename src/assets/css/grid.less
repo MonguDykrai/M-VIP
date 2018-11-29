@@ -1,0 +1,76 @@
+// （ 跟着写一个CSS栅格布局 ） https://blog.csdn.net/qq_37204849/article/details/73542782
+
+
+// 3.33333333%
+// @widthPer: 100% / 30;
+@widthPer: 100% / 40;
+
+.grid-container {
+  width : 100%;
+  // max-width : 1200px;
+  // box-sizing: border-box;
+}
+
+// clear fix
+.row:before, 
+.row:after {
+  content:"";
+  display: table ;
+  clear:both;
+}
+
+[class*='wk-col-'] {
+  float: left;
+  // min-height: 1px;
+  width: @widthPer;
+
+  // padding: 12px;
+  // background-color: #FFDCDC;
+}
+
+.gird-content {
+  // border-radius: 4px;
+  // min-height: 36px;
+}
+
+.col-1 {width: @widthPer * 1;}
+.col-2 {width: @widthPer * 2;}
+.col-3 {width: @widthPer * 3;}
+.col-4 {width: @widthPer * 4;}
+.col-5 {width: @widthPer * 5;}
+.col-6 {width: @widthPer * 6;}
+.col-7 {width: @widthPer * 7;}
+.col-8 {width: @widthPer * 8;}
+.col-9 {width: @widthPer * 9;}
+.col-10 {width: @widthPer * 10;}
+.col-11 {width: @widthPer * 11;}
+.col-12 {width: @widthPer * 12;}
+.col-13 {width: @widthPer * 13;}
+.col-14 {width: @widthPer * 14;}
+.col-15 {width: @widthPer * 15;}
+.col-16 {width: @widthPer * 16;}
+.col-17 {width: @widthPer * 17;}
+.col-18 {width: @widthPer * 18;}
+.col-19 {width: @widthPer * 19;}
+.col-20 {width: @widthPer * 20;}
+.col-21 {width: @widthPer * 21;}
+.col-22 {width: @widthPer * 22;}
+.col-23 {width: @widthPer * 23;}
+.col-24 {width: @widthPer * 24;}
+.col-25 {width: @widthPer * 25;}
+.col-26 {width: @widthPer * 26;}
+.col-27 {width: @widthPer * 27;}
+.col-28 {width: @widthPer * 28;}
+.col-29 {width: @widthPer * 29;}
+.col-30 {width: @widthPer * 30;}
+
+.col-31 {width: @widthPer * 31;}
+.col-32 {width: @widthPer * 32;}
+.col-33 {width: @widthPer * 33;}
+.col-34 {width: @widthPer * 34;}
+.col-35 {width: @widthPer * 35;}
+.col-36 {width: @widthPer * 36;}
+.col-37 {width: @widthPer * 37;}
+.col-38 {width: @widthPer * 38;}
+.col-39 {width: @widthPer * 39;}
+.col-40 {width: @widthPer * 40;}

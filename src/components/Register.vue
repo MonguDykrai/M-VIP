@@ -68,6 +68,9 @@
         loginBtnDisabled: true,
       }
     },
+    // mounted: function () {
+    //   console.log(this.$store.state.ulTotalLength1)
+    // },
     methods: {
       getCaptcha: function () {
         const { phoneNumber } = this

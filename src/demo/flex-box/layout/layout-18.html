@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="media.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    /* html {
+      font-size: 54px;
+    } */
+
+    body {
+      padding-top: 50px;
+      font-family: "Helvetica Neue", Helvetica, "microsoft yahei", Arial, sans-serif;
+      background-color: #F1F2F3;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: #999;
+    }
+
+    #wrapper {
+      display: flex;
+      flex-direction: row;
+      /* border-top: 1px solid #000; */
+      /* border-bottom: 1px solid #000; */
+      background-color: #fff;
+    }
+
+    li {
+      flex: 1;
+      display: flex;
+      /* justify-content: center; */
+      /* align-items: center; */
+
+      /* background-color: #f5dcdc; */
+      /* border-right: 1px solid #000; */
+      /* padding: 5px 0; */
+
+      /* margin: 0 10px; */
+
+      /* font-size: 14px; */
+
+      height: 1.2rem;
+      line-height: 1.2rem;
+    }
+
+    li a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.37333333333333335rem;
+      font-weight: 700;
+      height: 100%;
+      width: 100%;
+    }
+
+    li a span {
+      position: relative;
+      height: 100%;
+      padding: 0 .22883rem;
+    }
+
+    li a.activated span {
+      color: #FF2D95;
+    }
+
+    li a.activated span:after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 3px;
+      bottom: 0;
+      background-color: #FF2D95;
+    }
+  </style>
+</head>
+
+<body>
+  <ul id="wrapper">
+    <li>
+      <a href="" class="activated">
+        <span>今日疯抢（49）</span>
+      </a>
+    </li>
+    <li>
+      <a href="">
+        <span>下期预告（16）</span>
+      </a>
+    </li>
+  </ul>
+</body>
+
+</html>

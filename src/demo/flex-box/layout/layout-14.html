@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="media.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    html {
+      font-size: 54px;
+    }
+
+    body {
+      padding-top: 50px;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: #999;
+    }
+
+    #selection {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 10px;
+      border-top: 1px solid #DBDBDB;
+      border-left: 1px solid #DBDBDB;
+    }
+
+    #selection li {
+      width: 25%;
+      border-right: 1px solid #DBDBDB;
+      border-bottom: 1px solid #DBDBDB;
+      height: 1.92rem;
+      font-size: 16px;
+    }
+
+    #selection li a {
+      width: 100%;
+      height: 100%;
+    }
+
+    .top {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      height: 50%;
+    }
+
+    .bottom {
+      display: flex;
+      justify-content: center;
+      /* align-items: flex-start; */
+      padding-top: .21333rem;
+      height: 50%;
+    }
+
+    .bottom span {
+      color: #585c64;
+      font-size: 12px;
+    }
+
+    i {
+      width: .53333rem;
+      height: .53333rem;
+      background-size: cover;
+    }
+
+    i {
+      background-image: url('data:image/png;base64,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');
+    }
+
+    /* i:nth-child(1n) {
+      background-image: url(../assets/images/今日推荐.png);
+    }
+
+    i:nth-child(2n) {
+      background-image: url(../assets/images/最后疯抢.png);
+    }
+
+    i:nth-child(3n) {
+      background-image: url(../assets/images/时尚.png);
+    }
+
+    i:nth-child(4n) {
+      background-image: url(../assets/images/美妆.png);
+    }
+
+    i:nth-child(5n) {
+      background-image: url(../assets/images/母婴.png);
+    }
+
+    i:nth-child(6n) {
+      background-image: url(../assets/images/家电.png);
+    }
+
+    i:nth-child(7n) {
+      background-image: url(../assets/images/家居.png);
+    }
+
+    i:nth-child(8n) {
+      background-image: url(../assets/images/国际.png);
+    }
+
+    i:nth-child(9n) {
+      background-image: url(../assets/images/生活.png);
+    } */
+  </style>
+</head>
+
+<body>
+  <ul id="selection">
+    <li>
+      <a href="">
+        <div class="top">
+          <i></i>
+        </div>
+        <div class="bottom">
+          <span>今日推荐</span>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a href="">
+        <div class="top">
+          <i></i>
+        </div>
+        <div class="bottom">
+          <span>今日推荐</span>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a href="">
+        <div class="top">
+          <i></i>
+        </div>
+        <div class="bottom">
+          <span>今日推荐</span>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a href="">
+        <div class="top">
+          <i></i>
+        </div>
+        <div class="bottom">
+          <span>今日推荐</span>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a href="">
+        <div class="top">
+          <i></i>
+        </div>
+        <div class="bottom">
+          <span>今日推荐</span>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a href="">
+        <div class="top">
+          <i></i>
+        </div>
+        <div class="bottom">
+          <span>今日推荐</span>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a href="">
+        <div class="top">
+          <i></i>
+        </div>
+        <div class="bottom">
+          <span>今日推荐</span>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a href="">
+        <div class="top">
+          <i></i>
+        </div>
+        <div class="bottom">
+          <span>今日推荐</span>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a href="">
+        <div class="top">
+          <i></i>
+        </div>
+        <div class="bottom">
+          <span>今日推荐</span>
+        </div>
+      </a>
+    </li>
+  </ul>
+</body>
+
+</html>

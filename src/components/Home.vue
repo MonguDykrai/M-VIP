@@ -1,68 +1,94 @@
 <template>
-  <div id="home" v-if="this.$route.path === '/'">
-    <div class="download-banner" v-if="showBanner">
-      <span class="btn-close" @click="closeDownloadBanner">
-        <i class="iconfont icon-close"></i>
-      </span>
-    </div>
-
-    <div class="search-wrapper">
-      <div class="left">
-        <router-link to="/register" class="login">登录</router-link>
-      </div>
-      <div class="middle">
-        <input type="search" placeholder="搜索品牌或商品" maxlength="20" autocomplete="off">
-      </div>
-      <div class="right">
-        <router-link to="" class="classify">
-          <i></i>
-        </router-link>
+  <div id="home" :class="['grid-container']" v-if="this.$route.path === '/'">
+    <div class="row">
+      <div v-if="showBanner" :class="['download-banner', 'pos-rev', 'bg-size-cover', 'h-rem-1d7333', 'wp100']">
+        <span class="btn-close" @click="closeDownloadBanner">
+          <i class="iconfont icon-close"></i>
+        </span>
       </div>
     </div>
 
-    <div class="tab-bar">
-      <div class="iscroll-wrapper" ref="tbIscrollWrapper">
-        <div class="scroller" ref="tbScroller">
-          <ul ref="tbUL">
-            <li><a href="javascript: void(0);">今日推荐</a></li>
-            <li><a href="javascript: void(0);">最后疯抢</a></li>
-            <li><a href="javascript: void(0);">时尚</a></li>
-            <li><a href="javascript: void(0);">美妆</a></li>
-            <li><a href="javascript: void(0);">母婴</a></li>
-            <li><a href="javascript: void(0);">家电</a></li>
-            <li><a href="javascript: void(0);">家居</a></li>
-            <li><a href="javascript: void(0);">国际</a></li>
-            <li><a href="javascript: void(0);">生活</a></li>
-          </ul>
+    <div class="row">
+      <div :class="['search-wrapper', 'wp100', 'h-rem-1d111', 'bg-f9f9fa']">
+        <div :class="['search-left', 'flex', 'hp100', 'w-rem-1d111', 'fl']">
+          <router-link to="/register" :class="['login', 'flex', 'justify-content-center', 'align-items-center', 'wp100', 'link-color-585c64', 'fs-rem-d34667']">登录</router-link>
         </div>
-
-        <div class="more" ref="tbMore"></div>
+        <div :class="['search-middle', 'flex', 'justify-content-center', 'align-items-center', 'hp100', 'w-rem-7d777', 'p-rem-185-0', 'fl']">
+          <input type="search" placeholder="搜索品牌或商品" maxlength="20" autocomplete="off" :class="['wp100', 'hp100', 'border-color-dfe0e1', 'bg-white', 'fs-rem-d3733', 'pl-rem-d259', 'br-rem-d370']">
+        </div>
+        <div :class="['search-right', 'flex', 'w-rem-1d111', 'hp100', 'fr']">
+          <router-link to="" @click.native="showWarningBox" :class="['classify', 'flex', 'justify-content-center', 'align-items-center', 'wp100', 'hp100']">
+            <i :class="['bg-size-cover', 'w-rem-d64', 'h-rem-d64']"></i>
+          </router-link>
+        </div>
       </div>
     </div>
 
+    <div class="row">
+      <div class="tab-bar">
+        <div class="iscroll-wrapper" ref="tbIscrollWrapper" :class="['bg-f9f9fa']">
+          <div class="scroller" ref="tbScroller">
+            <ul ref="tbUL">
+              <li v-for="(item, index) in tabList" :key="index" :class="['bg-f9f9fa']">
+                <a href="javascript: void(0);" :class="['link-color-585c64', index]">{{ item }}</a>
+              </li>
+              <!-- <li><a href="javascript: void(0);">今日推荐</a></li>
+                  <li><a href="javascript: void(0);">最后疯抢</a></li>
+                  <li><a href="javascript: void(0);">时尚</a></li>
+                  <li><a href="javascript: void(0);">美妆</a></li>
+                  <li><a href="javascript: void(0);">母婴</a></li>
+                  <li><a href="javascript: void(0);">家电</a></li>
+                  <li><a href="javascript: void(0);">家居</a></li>
+                  <li><a href="javascript: void(0);">国际</a></li>
+                  <li><a href="javascript: void(0);">生活</a></li> -->
+            </ul>
+          </div>
 
-    <div class="brand-ad">
-      <img src="../assets/images/Home/img-brand-ad.jpg" alt="">
+          <div :class="['more', 'bg-f9f9fa']" ref="tbMore">
+            <i class="icon-arrow-down"></i>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <div class="row">
+      <div class="brand-ad">
+        <img src="../assets/images/Home/img-brand-ad.jpg" alt="">
+      </div>
+    </div>
+
+    <Selection />
+
+    <Recommend />
+
   </div>
 </template>
 
 <script>
   import IScroll from 'iscroll'
-
+  import Selection from './Selection.vue'
+  import Recommend from './Recommend.vue'
 
   export default {
     name: 'home',
+    components: {
+      Selection,
+      Recommend
+    },
     data: function () {
       return {
         showBanner: true,
         ulTotalLength: 0,
+        tabList: ['今日推荐', '最后疯抢', '时尚', '美妆', '母婴', '家电', '家居', '国际', '生活'],
       }
     },
     created: function () {
 
     },
     mounted: function () {
+      this.initIScroll()
+    },
+    updated: function () {
       this.initIScroll()
     },
     methods: {
@@ -90,6 +116,10 @@
         console.log(this)
         console.log(this.$refs)
         this.showBanner = false
+      },
+
+      showWarningBox: function () {
+        alert(1)
       }
     }
   }
@@ -107,11 +137,7 @@
   } */
 
   .download-banner {
-    position: relative;
     background-image: url(../assets/images/Home/05fc1148.download-banner.png);
-    background-size: cover;
-    height: 1.7333rem;
-    width: 100%;
 
     .btn-close {
       position: absolute;
@@ -134,74 +160,26 @@
 
   /* search-wrapper */
   .search-wrapper {
-    width: 100%;
-    height: 1.111rem;
-    box-sizing: border-box;
     /* border-bottom: 1px solid #CCC; */
 
-    .left {
-      float: left;
-      display: flex;
-      width: 1.111rem;
-      /* background-color: red; */
-      height: 100%;
-      box-sizing: border-box;
+    .search-left {
 
-      .login {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: .34667rem;
-        width: 100%;
-        color: rgb(88, 92, 100);
-      }
+      .login {}
     }
 
-    .middle {
-      padding: .185rem 0;
-      float: left;
-      width: 7.777rem;
-      height: 100%;
-      /* background-color: green; */
-      box-sizing: border-box;
+    .search-middle {
 
-      input {
-        padding-left: .259rem;
-        display: block;
-        width: 100%;
-        height: 100%;
-        font-size: .3733rem;
-        box-sizing: border-box;
-        border-radius: .370rem;
-        background-color: #fff;
-        border: 1px solid #DFE0E1;
-      }
+      input {}
     }
 
-    .right {
-      float: right;
-      display: flex;
-      width: 1.111rem;
-      /* background-color: blue; */
-      height: 100%;
-      box-sizing: border-box;
+    .search-right {
 
       .classify {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 100%;
 
         i {
           background-image: url(../assets/images/Home/classify.png);
-          background-size: cover;
-          width: .64rem;
-          height: .64rem;
         }
       }
-
-
     }
   }
 
@@ -222,13 +200,19 @@
       overflow: hidden;
 
       .more {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         z-index: 10;
         position: absolute;
         top: 0;
         right: 0;
         width: 1.0667rem;
         height: 100%;
-        background-color: red;
+
+        >.icon-arrow-down {
+          font-size: .48rem;
+        }
       }
 
       .scroller {

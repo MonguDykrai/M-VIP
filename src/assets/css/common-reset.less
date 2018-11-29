@@ -1,0 +1,103 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+/* iScroll 需要 */
+* {
+	box-sizing: border-box;
+}
+
+/* iScroll 需要 */
+html {
+	-ms-touch-action: none;
+	touch-action: none;
+}
+
+body {
+	font-family: "Microsoft Yahei", "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+}
+
+/* iScroll 需要 */
+body {
+	overflow: hidden;
+}
+
+// https://blog.csdn.net/lily2016n/article/details/78228464 ( 解决移动端页面点击图标或按钮产生透明灰色背景 )
+html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+	color: #CCCCCC;
+	opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+	color: #CCCCCC;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+	color: #CCCCCC;
+}
+
+a, a:link, a:visited, a:hover, a:focus, a:active{
+	color: inherit;
+	text-decoration: none;
+}
+
+// https://www.cnblogs.com/karila/p/6276861.html ( 取消a标签在移动端点击时的蓝色 )
+a, span {
+	-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+	-webkit-user-select: none;
+	-moz-user-focus: none;
+	-moz-user-select: none;
+}
+
+// https://www.cnblogs.com/karila/p/6276861.html ( 去除ios input框点击时的灰色背景 )
+input {
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+
+// https://www.cnblogs.com/karila/p/6276861.html ( 使用图片作为a标签的点击按钮时，当触发touchstart的时候，往往会有一个灰色的背景 )
+a,a:hover,a:active,a:visited,a:link,a:focus{
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+	-webkit-tap-highlight-color: transparent;
+	outline:none;
+	background: none;
+	text-decoration: none;
+}
+
+// ---
+// https://blog.csdn.net/fb_01/article/details/50352612 
+::selection {
+	background: #FFF;
+	color: #333;
+}
+::-moz-selection {
+	background: #FFF;
+	color: #333;
+}
+::-webkit-selection {
+	background: #FFF;
+	color: #333;
+}
+// ---
+
+ul, ol, li {
+	list-style: none;
+}

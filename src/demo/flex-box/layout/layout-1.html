@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="media.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    #wrapper {
+      height: 100%;
+    }
+
+    #content-wrap {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      height: 87%;
+    }
+
+    #header {
+      background-color: #FF9A00;
+      height: 5%;
+    }
+
+    #footer {
+      background-color: #689AD3;
+      height: 8%;
+    }
+
+    #right-sidebar {
+      flex: 0 0 200px;
+      background-color: #A66400;
+    }
+
+    #content {
+      background-color: #FF7373;
+      flex: 1;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="wrapper">
+    <div id="header"></div>
+    <div id="content-wrap">
+      <div id="content">
+        <div id="inner-content">
+        </div>
+      </div>
+      <div id="right-sidebar"></div>
+    </div>
+    <div id="footer"></div>
+  </div>
+</body>
+
+</html>

@@ -8,6 +8,8 @@
       </ul>
 
       <img :src="list[0].imgUrl" style="width: 100%;" alt="">
+
+      <router-link to="/">首页</router-link>
     </div>
   </transition>
 </template>
@@ -32,7 +34,7 @@
     data: function () {
       return {
         selectedItem: 'product',
-        list: [{ imgUrl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542611601314&di=98c82cf117a4c5c5bf60c141a2320f3c&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F6a600c338744ebf8ce2a3c21d3f9d72a6059a751.jpg' }]
+        list: [{ imgUrl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542778825696&di=e8b01245a6eeae45c802d8f31186a154&imgtype=0&src=http%3A%2F%2Fwww.51pptmoban.com%2Fd%2Ffile%2F2015%2F06%2F02%2Ff7831ca87e3ffe9f80ed586391a901fd.jpg' }]
       }
     },
     created: function () {
@@ -74,13 +76,23 @@
   }
 
   /* https://cn.vuejs.org/v2/guide/transitions.html#ad */
-  .v-enter-active,
+  /* .v-enter-active,
   .v-leave-active {
     transition: opacity .5s;
   }
 
   .v-enter,
   .v-leave-to {
+    opacity: 0;
+  } */
+
+  .v-enter-active,
+    {
+    transition: opacity .5s;
+  }
+
+  .v-enter,
+    {
     opacity: 0;
   }
 </style>

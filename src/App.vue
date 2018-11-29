@@ -2,7 +2,9 @@
   <div id="app">
     <app-home></app-home>
     <router-view></router-view>
-    <!-- <router-link to="/user-fav" v-if="this.$route.path === '/'" exact>我的收藏</router-link> -->
+    <router-link to="/user-fav" v-if="this.$route.path === '/'" exact>我的收藏</router-link>
+    <br>
+    <button @click.stop="logout" v-show="this.$route.path === '/'" style="font-size: 30px;">退出</button>
 
     <!-- <div class="fn-btns" v-if="true">
       <router-link to="/register" v-show="this.$route.path === '/'" exact>注册</router-link>
